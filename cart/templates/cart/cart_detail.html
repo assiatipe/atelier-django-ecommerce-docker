@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Panier | TechStore{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h1 style="font-weight: 900;">Votre panier</h1>
+    <p class="text-muted">Vérifiez vos produits avant de passer à la commande.</p>
+</div>
+
+{% if cart_items %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            {% for item in cart_items %}
+                <div class="card product-card mb-3">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" class="img-fluid rounded-4" style="max-height: 120px; object-fit: contain;">
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-5">
+                                <h4 class="fw-bold">{{ item.product.name }}</h4>
+                                <p class="text-muted mb-1">Prix : {{ item.product.price }} DH</p>
+                                <p class="text-muted mb-0">Quantité : {{ item.quantity }}</p>
+                            </div>
+
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <p class="price mb-3">{{ item.subtotal }} DH</p>
+
+                                <div class="d-flex justify-content-md-end gap-2">
+                                    <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-soft btn-sm">-</a>
+                                    <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-soft btn-sm">+</a>
+                                    <a href="{% url 'delete_from_cart' item.product.id %}" class="btn btn-outline-danger btn-sm rounded-pill">Supprimer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="auth-card mt-0">
+                <h3 class="fw-bold">Résumé</h3>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>Total</span>
+                    <strong class="price">{{ total }} DH</strong>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="btn btn-pastel w-100 mt-4">
+                    Commander
+                </a>
+
+                <a href="/products/" class="btn btn-soft w-100 mt-3">
+                    Continuer mes achats
+                </a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="fw-bold">Votre panier est vide</h3>
+        <p class="text-muted">Ajoutez des produits depuis la boutique.</p>
+        <a href="/products/" class="btn btn-pastel mt-3">Voir les produits</a>
+    </div>
+{% endif %}
+
+{% endblock %}

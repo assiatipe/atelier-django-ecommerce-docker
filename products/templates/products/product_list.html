@@ -1,23 +1,220 @@
-<h1>Nos Produits</h1>
+{% extends "base.html" %}
 
-<a href="{% url 'category_list' %}">Voir les catégories</a>
+{% block title %}Accueil | TechStore{% endblock %}
 
-<ul>
-    {% for product in products %}
-        <li>
-            <h3><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
-            <p>Prix : {{ product.price }} €</p>
-            <p>
-                Catégorie :
-                <a href="{% url 'category_detail' product.category.id %}">
-                    {{ product.category.name }}
-                </a>
+{% block content %}
+
+<section class="hero mb-5" style="padding: 54px 48px;">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+            <span class="badge-soft">Bienvenue sur TechStore</span>
+
+            <h1 class="mt-4 mb-3" style="
+                font-size: clamp(2.7rem, 4.8vw, 4.3rem);
+                line-height: 1.05;
+                font-weight: 900;
+                letter-spacing: -1.6px;
+                max-width: 560px;
+            ">
+                La technologie,
+                dans une interface
+                élégante et moderne
+            </h1>
+
+            <p style="
+                font-size: 1.08rem;
+                line-height: 1.8;
+                color: #4b5563;
+                max-width: 540px;
+            ">
+                Découvrez notre sélection de produits informatiques dans une
+                boutique en ligne pensée pour offrir une expérience fluide,
+                esthétique et professionnelle.
             </p>
-            {% if product.image %}
-                <img src="{{ product.image.url }}" width="150" alt="{{ product.name }}">
-            {% endif %}
-        </li>
-    {% empty %}
-        <p>Aucun produit disponible.</p>
-    {% endfor %}
-</ul>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="/products/" class="btn btn-pastel">Explorer les produits</a>
+                <a href="{% url 'category_list' %}" class="btn btn-soft">Découvrir les catégories</a>
+
+                {% if user.is_authenticated and user.is_staff %}
+                    <a href="/admin/" class="btn btn-soft">Espace admin</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div style="
+                background: rgba(255,255,255,0.40);
+                border-radius: 32px;
+                padding: 24px;
+                border: 1px solid rgba(255,255,255,0.55);
+                box-shadow: 0 20px 55px rgba(124, 58, 237, 0.10);
+            ">
+                <svg viewBox="0 0 620 430" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heroBgDevices" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#dbeafe"/>
+                            <stop offset="55%" stop-color="#ede9fe"/>
+                            <stop offset="100%" stop-color="#fce7f3"/>
+                        </linearGradient>
+
+                        <linearGradient id="deviceAccent" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="100%" stop-color="#a78bfa"/>
+                        </linearGradient>
+
+                        <linearGradient id="screenSoft" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#eef2ff"/>
+                            <stop offset="100%" stop-color="#fdf2f8"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- fond -->
+                    <rect x="0" y="0" width="620" height="430" rx="28" fill="url(#heroBgDevices)"/>
+
+                    <!-- cercles décoratifs -->
+                    <circle cx="90" cy="82" r="34" fill="#ffffff" opacity="0.25"/>
+                    <circle cx="540" cy="88" r="38" fill="#ffffff" opacity="0.22"/>
+                    <circle cx="548" cy="338" r="25" fill="#ffffff" opacity="0.18"/>
+
+                    <!-- cadre général -->
+                    <rect x="58" y="56" width="504" height="318" rx="34" fill="white" opacity="0.35"/>
+
+                    <!-- laptop -->
+                    <rect x="140" y="118" width="255" height="150" rx="20" fill="#1f2937"/>
+                    <rect x="152" y="130" width="231" height="126" rx="14" fill="url(#screenSoft)"/>
+                    <rect x="174" y="154" width="90" height="56" rx="14" fill="url(#deviceAccent)"/>
+                    <rect x="278" y="156" width="74" height="11" rx="5.5" fill="#d1d5db"/>
+                    <rect x="278" y="177" width="88" height="10" rx="5" fill="#c4b5fd"/>
+                    <rect x="278" y="195" width="78" height="10" rx="5" fill="#d1d5db"/>
+                    <rect x="278" y="214" width="58" height="10" rx="5" fill="#f9a8d4"/>
+                    <rect x="175" y="228" width="180" height="8" rx="4" fill="#ddd6fe"/>
+
+                    <!-- base laptop -->
+                    <path d="M120 275 H415 L390 295 H148 Z" fill="#cbd5e1"/>
+                    <rect x="235" y="282" width="68" height="6" rx="3" fill="#94a3b8"/>
+
+                    <!-- tablette -->
+                    <rect x="430" y="108" width="105" height="145" rx="18" fill="#334155"/>
+                    <rect x="440" y="120" width="85" height="121" rx="12" fill="url(#screenSoft)"/>
+                    <rect x="454" y="138" width="56" height="40" rx="10" fill="url(#deviceAccent)"/>
+                    <rect x="452" y="188" width="58" height="8" rx="4" fill="#d1d5db"/>
+                    <rect x="452" y="202" width="46" height="8" rx="4" fill="#ddd6fe"/>
+                    <rect x="452" y="216" width="52" height="8" rx="4" fill="#f9a8d4"/>
+                    <circle cx="482.5" cy="246" r="3.5" fill="#94a3b8"/>
+
+                    <!-- téléphone -->
+                    <rect x="395" y="245" width="68" height="118" rx="20" fill="#0f172a"/>
+                    <rect x="403" y="258" width="52" height="94" rx="14" fill="url(#screenSoft)"/>
+                    <rect x="416" y="272" width="26" height="26" rx="8" fill="url(#deviceAccent)"/>
+                    <rect x="411" y="306" width="36" height="7" rx="3.5" fill="#d1d5db"/>
+                    <rect x="411" y="319" width="28" height="7" rx="3.5" fill="#ddd6fe"/>
+                    <rect x="411" y="332" width="31" height="7" rx="3.5" fill="#f9a8d4"/>
+                    <rect x="421" y="249" width="16" height="4" rx="2" fill="#94a3b8"/>
+
+                    <!-- petits éléments déco -->
+                    <circle cx="110" cy="325" r="10" fill="#7c3aed"/>
+                    <circle cx="110" cy="350" r="14" fill="#c4b5fd"/>
+
+                    <!-- texte discret -->
+                    <text x="148" y="392" font-size="15" fill="#6b7280">
+                        Laptop · Tablette · Smartphone
+                    </text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+        <h2 class="mb-1" style="font-weight: 800;">Nos produits</h2>
+        <p class="text-muted mb-0">
+            Explorez notre sélection de produits informatiques.
+        </p>
+    </div>
+
+    <a href="{% url 'category_list' %}" class="btn btn-soft">
+        Voir les catégories
+    </a>
+</div>
+
+{% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card product-card">
+
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="product-img d-flex align-items-center justify-content-center">
+                            <svg width="90" height="90" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="10" y="14" width="44" height="28" rx="4" fill="#c4b5fd"/>
+                                <rect x="14" y="18" width="36" height="20" rx="2" fill="#ffffff"/>
+                                <rect x="6" y="44" width="52" height="4" rx="2" fill="#a78bfa"/>
+                            </svg>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body p-4">
+                        <span class="badge-soft">
+                            {% if product.category %}
+                                {{ product.category.name }}
+                            {% else %}
+                                Informatique
+                            {% endif %}
+                        </span>
+
+                        <h4 class="mt-3 mb-2">
+                            <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark">
+                                {{ product.name }}
+                            </a>
+                        </h4>
+
+                        {% if product.description %}
+                            <p class="text-muted">
+                                {{ product.description|truncatewords:18 }}
+                            </p>
+                        {% else %}
+                            <p class="text-muted">
+                                Produit informatique adapté aux études, au travail et au développement.
+                            </p>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <span class="price">{{ product.price }} DH</span>
+                            <span class="text-muted small">Stock : {{ product.stock }}</span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-soft w-100">
+                                Voir le détail
+                            </a>
+
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-pastel w-100">
+                                Ajouter au panier
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="mt-3">Aucun produit disponible</h3>
+        <p class="text-muted">
+            Ajoutez des produits depuis l’administration Django.
+        </p>
+
+        {% if user.is_authenticated and user.is_staff %}
+            <a href="/admin/" class="btn btn-pastel mt-2">
+                Ajouter un produit
+            </a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}

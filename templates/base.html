@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}TechStore{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pastel-blue: #dbeafe;
+            --pastel-purple: #ede9fe;
+            --pastel-pink: #fce7f3;
+            --dark: #1f2937;
+            --muted: #6b7280;
+            --primary: #7c3aed;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fbff 0%, #fdf2f8 45%, #f5f3ff 100%);
+            font-family: Arial, sans-serif;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.12);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary) !important;
+        }
+
+        .nav-link {
+            color: #374151 !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--pastel-blue), var(--pastel-purple), var(--pastel-pink));
+            border-radius: 28px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.12);
+        }
+
+        .hero h1 {
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 4rem);
+        }
+
+        .hero p {
+            color: #4b5563;
+            font-size: 1.1rem;
+        }
+
+        .btn-pastel {
+            background: var(--primary);
+            color: white;
+            border-radius: 999px;
+            padding: 10px 24px;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 12px 25px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-pastel:hover {
+            background: #6d28d9;
+            color: white;
+        }
+
+        .btn-soft {
+            background: white;
+            color: var(--primary);
+            border: 1px solid #ddd6fe;
+            border-radius: 999px;
+            padding: 10px 24px;
+            font-weight: 700;
+        }
+
+        .product-card {
+            border: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 18px 45px rgba(31, 41, 55, 0.08);
+            transition: 0.25s ease;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(124, 58, 237, 0.16);
+        }
+
+        .product-img {
+            height: 210px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #eff6ff, #fdf2f8);
+            padding: 20px;
+        }
+
+        .price {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
+
+        .auth-card {
+            max-width: 430px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.15);
+        }
+
+        .form-control {
+            border-radius: 16px;
+            padding: 12px 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        footer {
+            color: var(--muted);
+            font-size: 0.9rem;
+            padding: 35px 0;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">TechStore</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Accueil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/products/">Produits</a>
+                </li>
+
+                {% if user.is_authenticated and user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/">Admin</a>
+                    </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link">Bonjour, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="/logout/">
+                            {% csrf_token %}
+                            <button class="btn btn-soft btn-sm" type="submit">Déconnexion</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup/">Créer un compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-pastel btn-sm" href="/login/">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-5">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="text-center">
+    <div class="container">
+        © 2026 TechStore — Application Django déployée avec Docker et MySQL
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

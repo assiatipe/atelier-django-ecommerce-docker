@@ -1,17 +1,94 @@
-<h1>{{ product.name }}</h1>
+{% extends "base.html" %}
 
-{% if product.image %}
-    <img src="{{ product.image.url }}" width="250" alt="{{ product.name }}">
-{% endif %}
+{% block title %}{{ product.name }} | TechStore{% endblock %}
 
-<p><strong>Description :</strong> {{ product.description }}</p>
-<p><strong>Prix :</strong> {{ product.price }} €</p>
-<p><strong>Stock :</strong> {{ product.stock }}</p>
-<p>
-    <strong>Catégorie :</strong>
-    <a href="{% url 'category_detail' product.category.id %}">
-        {{ product.category.name }}
-    </a>
-</p>
+{% block content %}
 
-<a href="{% url 'product_list' %}">Retour à la liste des produits</a>
+<div class="row align-items-center g-5">
+    <div class="col-lg-6">
+        <div class="product-card p-4 text-center">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="
+                    width: 100%;
+                    max-height: 420px;
+                    object-fit: contain;
+                    border-radius: 24px;
+                    background: linear-gradient(135deg, #eff6ff, #fdf2f8);
+                    padding: 25px;
+                ">
+            {% else %}
+                <div style="
+                    height: 350px;
+                    border-radius: 24px;
+                    background: linear-gradient(135deg, #eff6ff, #fdf2f8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                    <svg width="130" height="130" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="14" width="44" height="28" rx="4" fill="#c4b5fd"/>
+                        <rect x="14" y="18" width="36" height="20" rx="2" fill="#ffffff"/>
+                        <rect x="6" y="44" width="52" height="4" rx="2" fill="#a78bfa"/>
+                    </svg>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <span class="badge-soft">
+            {% if product.category %}
+                {{ product.category.name }}
+            {% else %}
+                Informatique
+            {% endif %}
+        </span>
+
+        <h1 class="mt-4 mb-3" style="
+            font-weight: 900;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            letter-spacing: -1px;
+        ">
+            {{ product.name }}
+        </h1>
+
+        <p class="text-muted" style="font-size: 1.1rem; line-height: 1.8;">
+            {{ product.description }}
+        </p>
+
+        <div class="product-card p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Prix</span>
+                <strong class="price" style="font-size: 1.6rem;">{{ product.price }} DH</strong>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Stock disponible</span>
+                <strong>{{ product.stock }}</strong>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted">Catégorie</span>
+                <strong>
+                    {% if product.category %}
+                        {{ product.category.name }}
+                    {% else %}
+                        Informatique
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+
+        <div class="d-grid gap-3 mt-4">
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-pastel">
+                Ajouter au panier
+            </a>
+
+            <a href="/products/" class="btn btn-soft">
+                Retour aux produits
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

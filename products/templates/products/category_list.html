@@ -1,11 +1,86 @@
-<h1>Catégories</h1>
+{% extends "base.html" %}
 
-<ul>
-    {% for category in categories %}
-        <li>
-            <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
-        </li>
-    {% endfor %}
-</ul>
+{% block title %}Catégories | TechStore{% endblock %}
 
-<a href="{% url 'product_list' %}">Voir les produits</a>
+{% block content %}
+
+<section class="mb-5">
+    <div class="hero" style="padding: 45px;">
+        <span class="badge-soft">Catalogue TechStore</span>
+
+        <h1 class="mt-4 mb-3" style="
+            font-weight: 900;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            letter-spacing: -1px;
+        ">
+            Explorez nos catégories
+        </h1>
+
+        <p class="text-muted" style="max-width: 650px; font-size: 1.08rem; line-height: 1.7;">
+            Retrouvez nos produits organisés par univers : ordinateurs portables,
+            smartphones, tablettes et accessoires informatiques.
+        </p>
+
+        <a href="/products/" class="btn btn-pastel mt-3">
+            Voir tous les produits
+        </a>
+    </div>
+</section>
+
+{% if categories %}
+    <div class="row g-4">
+        {% for category in categories %}
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card p-4 h-100">
+                    <div style="
+                        width: 62px;
+                        height: 62px;
+                        border-radius: 18px;
+                        background: linear-gradient(135deg, #ede9fe, #fce7f3);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 22px;
+                    ">
+                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="14" width="44" height="28" rx="5" fill="#a78bfa"/>
+                            <rect x="15" y="19" width="34" height="18" rx="3" fill="white"/>
+                            <rect x="7" y="45" width="50" height="5" rx="2.5" fill="#7c3aed"/>
+                        </svg>
+                    </div>
+
+                    <h3 class="fw-bold mb-3">
+                        {{ category.name }}
+                    </h3>
+
+                    {% if category.description %}
+                        <p class="text-muted" style="line-height: 1.7;">
+                            {{ category.description }}
+                        </p>
+                    {% else %}
+                        <p class="text-muted" style="line-height: 1.7;">
+                            Découvrez les produits disponibles dans cette catégorie.
+                        </p>
+                    {% endif %}
+
+                    <a href="{% url 'category_detail' category.id %}" class="btn btn-soft mt-3">
+                        Voir les produits
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="fw-bold">Aucune catégorie disponible</h3>
+        <p class="text-muted">Ajoutez des catégories depuis l’administration Django.</p>
+
+        {% if user.is_authenticated and user.is_staff %}
+            <a href="/admin/" class="btn btn-pastel mt-2">
+                Ajouter une catégorie
+            </a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}
